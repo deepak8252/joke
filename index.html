@@ -16,11 +16,9 @@
             text-transform: capitalize;
             font-family: sans-serif;
             margin: auto;
-          background-color: rgb(50, 63, 50);
-           color: white;
-           box-shadow: 0px 3px 3px rgba(7, 24, 7,2);
-
-
+            background-color: rgb(50, 63, 50);
+            color: white;
+            box-shadow: 0px 3px 3px rgba(7, 24, 7,2);
         }
         button{
             padding: 10px;
@@ -39,30 +37,32 @@
   
     <div class="container">
         <h2>joke of the day</h2>
-        <p id="joke-content">loading joke ....</p>
+        <p class="joke-content">loading joke ....</p>
+        <p class="joke-content">loading joke ....</p>
         <h3 id="author"> loading author name.....</h3>
         <button onclick="joke()">next joke</button>
     </div>
     <script>
 async function joke(){
-    let prevJoke = ''; 
     try {
-            const res = await fetch("https://hindi-jokes-api.onrender.com/jokes?api_key=8bd1a2f7b96aca947b20ca0811dc");
-            const result = await res.json();
-            console.log(result);
+        const res = await fetch("https://hindi-jokes-api.onrender.com/jokes/2?api_key=8bd1a2f7b96aca947b20ca0811dc");
+        const result = await res.json();
 
-            let jokeContent = document.getElementById("joke-content");
-            let author = document.getElementById("author");
+        let jokeContents = document.querySelectorAll(".joke-content");
+        let author = document.getElementById("author");
 
-            // Display current joke
-            jokeContent.innerHTML = result.jokeContent;
-            author.innerHTML = result.created_by;
-           
-        } catch (error) {
-            console.error("Error fetching jokes:", error);
-        }
+        // Display current jokes
+        result.data.forEach((item, index) => {
+            jokeContents[index].innerHTML = item.jokeContent;
+        });
+
+        author.innerHTML = result.created_by;
+
+    } catch (error) {
+        console.error("Error fetching jokes:", error);
     }
-joke()
-    </script>
+}
+joke();
+</script>
 </body>
 </html>
